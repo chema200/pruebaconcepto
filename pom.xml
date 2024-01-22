@@ -7,6 +7,10 @@
     <packaging>pom</packaging>
     <name>pruebaConcepto</name>
     <description>pruebaConcepto Java EE 8 i JBOSS 7.2</description>
+    <scm>
+        <connection>scm:git:https://github.com/GovernIB/projectebase.git</connection>
+        <url>https://github.com/GovernIB/projectebase</url>
+    </scm>
     <properties>
 
         <maven.compiler.release>11</maven.compiler.release>
@@ -285,7 +289,7 @@
                             <home>${env.JBOSS_HOME}</home>
                         </container>
                         <configuration>
-                            <
+
                             <type>existing</type>
                             <home>${env.JBOSS_HOME}/standalone</home>
 
