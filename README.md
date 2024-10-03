@@ -47,18 +47,21 @@ La forma de evaluación será la siguiente una vez entregada la prueba:
 
 PASOS A SEGUIR:
 
-1. Instalar Docker y Docker Compose en la máquina virtual.
+
+***Instalar Docker y Docker Compose en la máquina virtual.***
 
 sudo apt update
 sudo apt install docker.io docker-compose -y
 sudo systemctl start docker
 sudo systemctl enable docker
 
-2. Clonar el repositorio.
+
+***Clonar el repositorio.***
 
 git clone https://github.com/intricomResources/PruebaTecnicaJava
 
-3. Arrancar Docker.
+
+***Arrancar Docker.***
 
 Para construir y levantar los contenedores de docker es necesario ejecutar:
 
@@ -66,24 +69,16 @@ docker-compose up --build
 
 Automaticamente generará el war ya que la orden está implementada en el fichero Dockerfile.
 
-ACCESOS:
 
-Aplicación:
+***ACCESOS:***
 
-Url: http://localhost:8084/{nombreapp}
+Aplicación: http://localhost:8084/{nombreapp}
 
-Consola JBOSS:
-
-URL: http://localhost:9994/console/index.html
+Consola JBOSS: http://localhost:9994/console/index.html
 
 
 Base de Datos PostgreSQL:
-
 Host: localhost
 Puerto: 5432
 Base de Datos: pruebaconcepto
 Usuario: pruebaconcepto
-
-
-
-
