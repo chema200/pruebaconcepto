@@ -50,10 +50,10 @@ PASOS A SEGUIR:
 
 ***Instalar Docker y Docker Compose en la máquina virtual.***
 
-sudo apt update
-sudo apt install docker.io docker-compose -y
-sudo systemctl start docker
-sudo systemctl enable docker
+* sudo apt update
+* sudo apt install docker.io docker-compose -y
+* sudo systemctl start docker
+* sudo systemctl enable docker
 
 
 ***Clonar el repositorio.***
@@ -65,7 +65,7 @@ git clone https://github.com/intricomResources/PruebaTecnicaJava
 
 Para construir y levantar los contenedores de docker es necesario ejecutar:
 
-docker-compose up --build
+* docker-compose up --build
 
 Automaticamente generará el war ya que la orden está implementada en el fichero Dockerfile.
 
@@ -78,7 +78,7 @@ Consola JBOSS: http://localhost:9994/console/index.html
 
 
 Base de Datos PostgreSQL:
-Host: localhost
-Puerto: 5432
-Base de Datos: pruebaconcepto
-Usuario: pruebaconcepto
+* Host: localhost
+* Puerto: 5432
+* Base de Datos: pruebaconcepto
+* Usuario: pruebaconcepto
