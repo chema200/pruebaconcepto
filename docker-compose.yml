@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: pruebaconcepto
+      POSTGRES_USER: pruebaconcepto
+      POSTGRES_PASSWORD: pruebaconcepto
+    ports:
+      - "5432:5432"
+
+  jboss:
+    build:
+      context: ./.deployment/docker
+      dockerfile: jboss/Dockerfile
+    ports:
+      - "8084:8084"
+      - "9994:9994"
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/pruebaconcepto
+      DB_USER: pruebaconcepto
+      DB_PASSWORD: pruebaconcepto
+    depends_on:
+      - db

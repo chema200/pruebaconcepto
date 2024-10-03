@@ -40,15 +40,20 @@ USER jboss
 WORKDIR /opt/jboss
 
 # Download and configure JBoss EAP
-COPY --chown=jboss ./.deployment/docker/jboss/jboss-eap-7.2.zip /tmp/
+COPY --chown=jboss jboss/jboss-eap-7.2.zip /tmp/
 
 RUN unzip /tmp/jboss-eap-$JBOSS_VERSION.zip -d /tmp/ \
     && mv /tmp/jboss-eap-$JBOSS_VERSION/* $JBOSS_HOME/ \
+    && chmod +x $JBOSS_HOME/bin/*.sh \
+    && chown -R jboss:jboss $JBOSS_HOME \
     && $JBOSS_HOME/bin/add-user.sh admin $ADMIN_PWD --silent
 
 FROM server as development
 
-COPY --chown=jboss ./.deployment/docker/jboss/properties/*.properties $JBOSS_CONFIG/
+# Orden para copiar auto el archivo WAR al directorio de despliegue del JBoss, pongo war de ejemplo hasta tener la app correcta.
+COPY --chown=jboss jboss/holamundo.war $JBOSS_HOME/standalone/deployments/
+
+COPY --chown=jboss jboss/properties/*.properties $JBOSS_CONFIG/
 
 EXPOSE 8084 9994 8789
 CMD ["/opt/jboss/bin/standalone.sh","-c", "standalone.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug", "*:8789"]
