@@ -1,3 +1,14 @@
+# Etapa de construcción del WAR
+FROM maven:3.8.4-jdk-11 AS build
+WORKDIR /app
+
+# Copiar el archivo pom.xml y las fuentes para resolver las dependencias y construir el WAR
+COPY ./pruebaconcepto/pom.xml /app/
+COPY ./pruebaconcepto/src /app/src
+
+# Compilar el WAR
+RUN mvn clean package -DskipTests
+
 # Dependencies environment
 FROM debian:bullseye AS base
 
@@ -13,7 +24,6 @@ RUN apt-get update &&        \
     default-jre           \
     curl                  && \
     apt-get clean
-
 
 # Configure JBoss EAP
 FROM base AS server
@@ -40,7 +50,7 @@ USER jboss
 WORKDIR /opt/jboss
 
 # Download and configure JBoss EAP
-COPY --chown=jboss jboss/jboss-eap-7.2.zip /tmp/
+COPY --chown=jboss ./.deployment/docker/jboss/jboss-eap-7.2.zip /tmp/
 
 RUN unzip /tmp/jboss-eap-$JBOSS_VERSION.zip -d /tmp/ \
     && mv /tmp/jboss-eap-$JBOSS_VERSION/* $JBOSS_HOME/ \
@@ -50,10 +60,25 @@ RUN unzip /tmp/jboss-eap-$JBOSS_VERSION.zip -d /tmp/ \
 
 FROM server as development
 
-# Orden para copiar auto el archivo WAR al directorio de despliegue del JBoss, pongo war de ejemplo hasta tener la app correcta.
-COPY --chown=jboss jboss/holamundo.war $JBOSS_HOME/standalone/deployments/
+# Copiar el WAR generado desde la etapa de construcción (Maven)
+COPY --from=build /app/target/Hotel-1.0-SNAPSHOT.war $JBOSS_HOME/standalone/deployments/
 
-COPY --chown=jboss jboss/properties/*.properties $JBOSS_CONFIG/
+# Copiar el driver de PostgreSQL
+COPY --chown=jboss ./.deployment/docker/drivers/postgresql-42.7.4-2024.jar $JBOSS_HOME/modules/org/postgresql/main/
+
+# Crear el módulo para el driver de PostgreSQL
+RUN echo '<?xml version="1.0" encoding="UTF-8"?>' > $JBOSS_HOME/modules/org/postgresql/main/module.xml && \
+    echo '<module xmlns="urn:jboss:module:1.1" name="org.postgresql">' >> $JBOSS_HOME/modules/org/postgresql/main/module.xml && \
+    echo '    <resources>' >> $JBOSS_HOME/modules/org/postgresql/main/module.xml && \
+    echo '        <resource-root path="postgresql-42.7.4-2024.jar"/>' >> $JBOSS_HOME/modules/org/postgresql/main/module.xml && \
+    echo '    </resources>' >> $JBOSS_HOME/modules/org/postgresql/main/module.xml && \
+    echo '    <dependencies>' >> $JBOSS_HOME/modules/org/postgresql/main/module.xml && \
+    echo '        <module name="javax.api"/>' >> $JBOSS_HOME/modules/org/postgresql/main/module.xml && \
+    echo '        <module name="javax.transaction.api"/>' >> $JBOSS_HOME/modules/org/postgresql/main/module.xml && \
+    echo '    </dependencies>' >> $JBOSS_HOME/modules/org/postgresql/main/module.xml && \
+    echo '</module>' >> $JBOSS_HOME/modules/org/postgresql/main/module.xml
+
+COPY --chown=jboss ./.deployment/docker/jboss/properties/*.properties $JBOSS_CONFIG/
 
 EXPOSE 8084 9994 8789
 CMD ["/opt/jboss/bin/standalone.sh","-c", "standalone.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "--debug", "*:8789"]
