@@ -72,7 +72,7 @@ Automaticamente generará el war ya que la orden está implementada en el ficher
 
 ***ACCESOS:***
 
-Aplicación: http://localhost:8084/{nombreapp}
+Aplicación: http://localhost:8084/Hotel-1.0-SNAPSHOT
 
 Consola JBOSS: http://localhost:9994/console/index.html
 
