@@ -63,9 +63,9 @@ git clone https://github.com/chema200/pruebaconcepto
 cd /pruebaconcepto
 
 ***Instalar GIT LFS (necesario para fichero grandes como el zip de JBOSS***
-sudo apt install git-lfs
-git lfs install
-git lfs pull
+* sudo apt install git-lfs
+* git lfs install
+* git lfs pull
 
 
 ***Arrancar Docker.***
