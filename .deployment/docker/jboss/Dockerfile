@@ -51,7 +51,7 @@ WORKDIR /opt/jboss
 
 # Download and configure JBoss EAP
 COPY --chown=jboss ./.deployment/docker/jboss/jboss-eap-7.2.zip /tmp/
-
+RUN chmod 644 /tmp/jboss-eap-$JBOSS_VERSION.zip && ls -l /tmp/ && file /tmp/jboss-eap-$JBOSS_VERSION.zip
 RUN unzip /tmp/jboss-eap-$JBOSS_VERSION.zip -d /tmp/ \
     && mv /tmp/jboss-eap-$JBOSS_VERSION/* $JBOSS_HOME/ \
     && chmod +x $JBOSS_HOME/bin/*.sh \
