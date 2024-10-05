@@ -14,5 +14,3 @@ target/
 # Fitxers de Netbeans
 nb-configuration.xml
 faces-config.NavData
-
-/.deployment/docker/jboss/jboss-eap-7.2.zip

@@ -58,7 +58,9 @@ PASOS A SEGUIR:
 
 ***Clonar el repositorio.***
 
-git clone https://github.com/intricomResources/PruebaTecnicaJava
+git clone https://github.com/chema200/pruebaconcepto
+
+cd /pruebaconcepto
 
 
 ***Arrancar Docker.***
@@ -68,6 +70,11 @@ Para construir y levantar los contenedores de docker es necesario ejecutar:
 * docker-compose up --build
 
 Automaticamente generará el war ya que la orden está implementada en el fichero Dockerfile.
+
+
+Si utilizamos linux y no arranca porque obtenemos un problema sobre el  módulo "distutils' tenemos que ejecutar: 
+
+sudo apt-get install python3-setuptools
 
 
 ***ACCESOS:***
